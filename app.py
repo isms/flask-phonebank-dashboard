@@ -35,7 +35,8 @@ def get_counts():
 
 @app.route('/resetdb')
 def reset():
-    return [redis.set(k, 0) for k in ['calls', 'signups', 'requests']]
+    [redis.set(k, 0) for k in ['calls', 'signups', 'requests']]
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
