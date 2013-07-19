@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markey Phone-A-Thon Tracker</title>
+  <link rel="shortcut icon" href="{{ static_url }}static/img/favicon.ico" />
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+  <script src="http://d3js.org/d3.v2.min.js"></script>
+  <style type="text/css">
+    body { padding-top: 70px; padding-bottom: 40px;
+           background-image: url('{{ static_url }}static/img/white_wall_hash.png');}
+    .chart rect { fill: steelblue; stroke: white; }
+    .chart2 rect { fill: #468847; stroke: white; }
+    div.indicator {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      font-size: 40px;
+      text-align: center;
+    }
+    div.hero-unit {
+      padding: 20px;
+    }
+  </style>
+  <script>
+    $(document).ready(function() {
+      updateCounts();
+      var interval = setInterval(function() {
+        updateCounts();
+      }, 30000);
+    });
+    function updateCounts() {
+      $.getJSON("/counts", function(counts) {
+        update(counts);
+      });
+    };
+  </script>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#"><img src="{{ static_url }}static/img/logo-navbar.png"/> Markey Phone-A-Thon Tracker</a>
+          <ul class="nav pull-right">
+            <li>
+              <a href="/add/calls/10">
+                <button id="btn_calls" class="btn btn-small btn-info">I made 10 more calls!</button>
+              </a>
+            </li>
+            <li>
+              <a href="/add/signups/1">
+                <button id="btn_signups" class="btn btn-small btn-success">I got another sign-up!</button>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero-unit">
+        <div class="pull-right">
+          <img style="margin-left:20px; margin-top:20px;" class="img-polaroid" src="{{ static_url }}static/img/callers.jpg" />
+        </div>
+        <div>
+          <h3>Tracking our progress as we make calls for Ed!</h3>
+          <p>The numbers below represent everybody who is currently using this site while making calls for Markey. Every time you make <span class="label label-info">10 phone calls</span>, or get <span class="label label-success">1 signup</span>, use the buttons at the top to let everybody know your progress! (The numbers will update every 30 seconds, you don't need to hit refresh.)</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4 offset1">
+          <h2>Total calls made:</h1>
+          <div id="count1" class="alert alert-info indicator">{{ calls }}</div>
+          Recent activity:
+          <div id="chart1"></div>
+          <img class="pull-right" src="{{ static_url }}static/img/load-calls.gif" />
+        </div>
+        <div class="span4 offset2">
+          <h2>Total sign-ups:</h2>
+          <div id="count2" class="alert alert-success indicator">{{ signups }}</div>
+          Recent activity:
+          <div id="chart2"></div>
+          <img class="pull-right" src="{{ static_url }}static/img/load-signups.gif" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4 offset1">
+
+        </div>
+        <div class="span4 offset2">
+
+        </div>
+      </div>
+    </div>
+    <script src="{{ static_url }}static/js/main.js"></script>
+</body>
+</html>
